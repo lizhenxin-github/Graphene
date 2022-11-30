@@ -515,7 +515,7 @@ void IO_smart_iterator::read_trace_to_list(char *trace_file)
 	off_t num_blks = fsize(trace_file);
 	int64_t *blk_list = new int64_t[num_blks/sizeof(int64_t)];
 	//size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
-	fread(blk_list, sizeof(int64_t), num_blks, file);
+	assert(fread(blk_list, sizeof(int64_t), num_blks, file));
 	
 	reqt_blk_count = 0;
 	double tm= wtime();
@@ -551,7 +551,7 @@ void IO_smart_iterator::read_trace_to_bitmap(char *trace_file)
 	off_t num_blks = fsize(trace_file);
 	int64_t *blk_list = new int64_t[num_blks/sizeof(int64_t)];
 	//size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
-	fread(blk_list, sizeof(int64_t), num_blks, file);
+	assert(fread(blk_list, sizeof(int64_t), num_blks, file));
 	
 	reqt_blk_count = 0;
 	
@@ -698,10 +698,10 @@ void IO_smart_iterator::load_key(sa_t criterion)
 	while(cd->circ_free_chunk->is_empty()){}
 	this->wait_comp_time += (wtime() - blk_tm);
 
-	cd->get_chunk();
+	// cd->get_chunk();
 	cd->load_chunk();
 	cd->get_chunk();
-	cd->load_chunk();
+	// cd->load_chunk();
 	if((cd->circ_load_chunk->is_empty()) &&
 		(cd->circ_free_chunk->is_full()) &&
 		(cd->circ_free_ctx->is_full()) &&

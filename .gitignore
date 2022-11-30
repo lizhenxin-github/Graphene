@@ -1,0 +1,6 @@
+
+*.o
+*.log
+*.bin
+*.sh
+.vscode/settings.json

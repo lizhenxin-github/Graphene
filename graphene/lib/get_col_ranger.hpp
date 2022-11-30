@@ -4,7 +4,7 @@
 #ifndef _H_GET_COL_RANGER_
 #define _H_GET_COL_RANGER_
 
-inline index_t get_col_ranger(
+inline void get_col_ranger(
 		vertex_t* &col_ranger_ptr,
 		vertex_t** &front_queue_ptr,
 		index_t* &front_count_ptr,
@@ -26,7 +26,7 @@ inline index_t get_col_ranger(
 
 	if(file != NULL)
 	{
-		printf("col-ranger file is found\n");
+		printf("col-ranger file is found: %s\n", name);
 		size_t ret = fread(col_ranger_ptr, sizeof(vertex_t), 
 				(num_cols + 1) * num_rows, file);
 		assert(ret == (num_cols + 1) * num_rows);
