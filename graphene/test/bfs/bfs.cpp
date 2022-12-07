@@ -192,6 +192,7 @@ int main(int argc, char **argv)
 				it -> cd -> io_submit_time = 0;
 				it -> cd -> io_poll_time = 0;
 				it -> cd -> fetch_sz = 0;
+				it -> cd -> load_chunk_count = 0;
 			}
 
 			double ltm=wtime();
@@ -387,16 +388,21 @@ finish_point:
 			comm[tid] = it->cd->fetch_sz;
 #pragma omp barrier
 			index_t total_sz = 0;
-			for(int i = 0 ;i< NUM_THDS; ++i)
+			long load_chunk_count_sum = 0;
+			for(int i = 0 ;i< NUM_THDS; ++i){
 				total_sz += comm[i];
+				load_chunk_count_sum += it->cd->load_chunk_count;
+			}
 			total_sz >>= 1;//total size doubled
+			load_chunk_count_sum >>= 1;
 			
 			if(!tid) std::cout<<"@level-"<<(int)level
-				<<"-font-leveltime-converttm-iotm-waitiotm-waitcomptm-iosize: "
+				<<"-font-leveltime-converttm-iotm-waitiotm-waitcomptm-iosize-chunk_cnt-chunk_utilization: "
 				<<front_count<<" "<<ltm<<" "<<convert_tm<<" "<<it->io_time
 				<<"("<<it->cd->io_submit_time<<","<<it->cd->io_poll_time<<") "
 				<<" "<<it->wait_io_time<<" "<<it->wait_comp_time<<" "
-				<<total_sz<<"\n";
+				<<total_sz<<" "
+ 				<<load_chunk_count_sum<<" "<<(total_sz*1.0/(load_chunk_count_sum*chunk_sz))<<"\n";
 			
 			if(front_count == 0 || level > 254) break;
 			prev_front_count = front_count;

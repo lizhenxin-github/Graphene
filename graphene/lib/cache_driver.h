@@ -42,6 +42,7 @@ class cache_driver
 		index_t blk_per_chunk;
 		long fetch_sz;
 		long save_sz;
+		long load_chunk_count;
 
 	public:
 		cache_driver(){};

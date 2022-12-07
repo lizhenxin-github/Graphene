@@ -46,6 +46,7 @@ cache_driver::cache_driver(
 	blk_beg_vert(blk_beg_vert),MAX_USELESS(MAX_USELESS)
 {
 	fetch_sz=0;
+	load_chunk_count=0;
 
 	io_submit_time = 0;
 	io_poll_time = 0;
@@ -163,6 +164,7 @@ void cache_driver::submit_io_req(index_t io_id)
 		//}
 		
 		fetch_sz += cache[chunk_id]->load_sz * sizeof(vertex_t);
+		load_chunk_count++;
 	}
 
 //	if(omp_get_thread_num() == 1)
