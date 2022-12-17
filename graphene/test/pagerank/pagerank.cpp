@@ -187,10 +187,10 @@ int main(int argc, char **argv)
 		index_t end_1d = beg_1d + step_1d;
 		if(tid==NUM_THDS-1) end_1d = vert_count;
 		//pin_thread(core_id,tid);
-		if(tid < 16) 
-			pin_thread_socket(socket_one, 12);
-		else
-			pin_thread_socket(socket_two, 12);
+		// if(tid < 16) 
+		// 	pin_thread_socket(socket_one, 12);
+		// else
+		// 	pin_thread_socket(socket_two, 12);
 		
 		if((tid&1) == 0) 
 		{
@@ -265,6 +265,8 @@ int main(int argc, char **argv)
 				//not early terminate
 				it -> reqt_blk_count = 1;//
 				//as long as not 0
+
+				it -> cd -> useful_vert_count = 0;
 			}
 
 			index_t front_count = 0;
@@ -311,7 +313,8 @@ int main(int argc, char **argv)
 						if(end>num_verts) end = num_verts;
 						for( ;beg<end; ++beg)
 						{
-							vertex_t nebr = pinst->buff[beg];
+							it -> cd -> useful_vert_count++;
+							vertex_t nebr = pinst->buff[beg];					
 							sa_next[vert_id] += sa_curr[nebr];
 						}
 						++vert_id;
@@ -423,16 +426,27 @@ finish_point:
 			comm[tid] = it->cd->fetch_sz;
 #pragma omp barrier
 			index_t total_sz = 0;
-			for(int i = 0 ;i< NUM_THDS; ++i)
+			long useful_vert_count_sum = 0;
+
+			for(int i = 0 ;i< NUM_THDS; ++i){
 				total_sz += comm[i];
+
+				useful_vert_count_sum += it_comm[(i>>1)<<1]->cd->useful_vert_count;
+			}
+#pragma omp barrier  //防止tid!=0的线程清空it状态，从而让上面统计出错。
+
 			total_sz >>= 1;//total size doubled
-			
+			useful_vert_count_sum >>= 1;  
+
 			if(!tid) std::cout<<"@level-"<<(int)level
-				<<"-font-leveltime-converttm-iotm-waitiotm-waitcomptm-iosize: "
+				<<"-font-leveltime-converttm-iotm-waitiotm-waitcomptm-iosize-chunk_cnt-usefulvert-chunk_utilization:: "
 				<<front_count<<" "<<ltm<<" "<<convert_tm<<" "<<it->io_time
 				<<"("<<it->cd->io_submit_time<<","<<it->cd->io_poll_time<<") "
 				<<" "<<it->wait_io_time<<" "<<it->wait_comp_time<<" "
-				<<total_sz<<"\n";
+				<<total_sz<<" "
+ 				// <<load_chunk_count_sum<<" "<<(total_sz*1.0/(load_chunk_count_sum*chunk_sz))<<"\n";
+				<<useful_vert_count_sum<<" "<<(1.0*useful_vert_count_sum*sizeof(vertex_t)/total_sz)<<"\n";
+	
 			if(level == iteration) break;
 //			if(tid ==0) printf("%f %f %f %f %f %f %f %f %f\n", it->sa_ptr[121]*odeg_glb[121], it->sa_ptr[27]*odeg_glb[27], it->sa_ptr[52]*odeg_glb[52], it->sa_ptr[49]*odeg_glb[49], it->sa_ptr[95]*odeg_glb[95], it->sa_ptr[1884]*odeg_glb[1884], it->sa_ptr[2]*odeg_glb[2], it->sa_ptr[12]*odeg_glb[12], it->sa_ptr[131]*odeg_glb[131]);
 

@@ -149,10 +149,10 @@ int main(int argc, char **argv)
 		index_t end_1d = beg_1d + step_1d;
 		if(tid==NUM_THDS-1) end_1d = vert_count;
 		
-		if(tid < 16) 
-			pin_thread_socket(socket_one, 12);
-		else
-			pin_thread_socket(socket_two, 12);
+		// if(tid < 16) 
+		// 	pin_thread_socket(socket_one, 12);
+		// else
+		// 	pin_thread_socket(socket_two, 12);
 		if((tid&1) == 0) 
 		{
 			IO_smart_iterator *it_temp = 

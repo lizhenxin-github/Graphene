@@ -24,7 +24,8 @@ int main(int args, char **argv)
 	const int num_thds = atoi(argv[5]);
 
 	typedef long index_t;
-	typedef long file_vertex_t;
+	// typedef long file_vertex_t;
+	typedef int file_vertex_t;
 	typedef unsigned int vertex_t;
 	//typedef long vertex_t;
 

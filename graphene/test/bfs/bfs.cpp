@@ -42,17 +42,17 @@ int main(int argc, char **argv)
 		std::cout<<argv[i]<<" ";
 	std::cout<<"\n";
 
-	const int row_par = atoi(argv[1]);
-	const int col_par = atoi(argv[2]);
-	const int NUM_THDS = atoi(argv[3]);
+	const int row_par = atoi(argv[1]); //切分的行数
+	const int col_par = atoi(argv[2]); //切分的列数
+	const int NUM_THDS = atoi(argv[3]); //工作线程总数，等于row_par*col_par*2
 	const char *beg_dir = argv[4];
 	const char *csr_dir = argv[5];
 	const char *beg_header=argv[6];
 	const char *csr_header=argv[7];
-	const index_t num_chunks = atoi(argv[8]);
+	const index_t num_chunks = atoi(argv[8]);  //buffer中chunk数量
 	const size_t chunk_sz = atoi(argv[9]);
 	const index_t io_limit = atoi(argv[10]);
-	const index_t MAX_USELESS = atoi(argv[11]);
+	const index_t MAX_USELESS = atoi(argv[11]);  //bitmap合并中最大能不连续的大小
 	const index_t ring_vert_count = atoi(argv[12]);
 	const index_t num_buffs = atoi(argv[13]);
 	vertex_t root = (vertex_t) atol(argv[14]);
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 	
 	assert(NUM_THDS==(row_par*col_par*2));
 	sa_t *sa = NULL;
-	index_t *comm = new index_t[NUM_THDS];
+	index_t *comm = new index_t[NUM_THDS];  //每个分区的结点数量？
 	vertex_t **front_queue_ptr;
 	index_t *front_count_ptr;
 	vertex_t *col_ranger_ptr;
@@ -193,6 +193,8 @@ int main(int argc, char **argv)
 				it -> cd -> io_poll_time = 0;
 				it -> cd -> fetch_sz = 0;
 				it -> cd -> load_chunk_count = 0;
+
+				it -> cd -> useful_vert_count = 0;
 			}
 
 			double ltm=wtime();
@@ -252,6 +254,8 @@ int main(int argc, char **argv)
 							if(end>num_verts) end = num_verts;
 							for( ;beg<end; ++beg)
 							{
+								it -> cd -> useful_vert_count++;
+
 								vertex_t nebr = pinst->buff[beg];
 								if(sa[nebr] == INFTY)
 								{
@@ -265,7 +269,7 @@ int main(int argc, char **argv)
 						++vert_id;
 
 						if(vert_id >= it->row_ranger_end) break;
-						if(beg_pos[vert_id - it->row_ranger_beg]
+						if(beg_pos[vert_id - it->row_ranger_beg]   //?
 								- blk_beg_off > num_verts) 
 							break;
 					}
@@ -388,29 +392,31 @@ finish_point:
 			comm[tid] = it->cd->fetch_sz;
 #pragma omp barrier
 			index_t total_sz = 0;
-			long load_chunk_count_sum = 0;
+			long useful_vert_count_sum = 0;
+
 			for(int i = 0 ;i< NUM_THDS; ++i){
 				total_sz += comm[i];
-				load_chunk_count_sum += it->cd->load_chunk_count;
+
+				useful_vert_count_sum += it_comm[(i>>1)<<1]->cd->useful_vert_count;
 			}
+#pragma omp barrier  //防止tid!=0的线程清空it状态，从而让上面统计出错。
+
 			total_sz >>= 1;//total size doubled
-			load_chunk_count_sum >>= 1;
+			useful_vert_count_sum >>= 1;
 			
 			if(!tid) std::cout<<"@level-"<<(int)level
-				<<"-font-leveltime-converttm-iotm-waitiotm-waitcomptm-iosize-chunk_cnt-chunk_utilization: "
+				<<"-font-leveltime-converttm-iotm-waitiotm-waitcomptm-iosize-usefulvert-chunk_utilization: "
 				<<front_count<<" "<<ltm<<" "<<convert_tm<<" "<<it->io_time
 				<<"("<<it->cd->io_submit_time<<","<<it->cd->io_poll_time<<") "
 				<<" "<<it->wait_io_time<<" "<<it->wait_comp_time<<" "
 				<<total_sz<<" "
- 				<<load_chunk_count_sum<<" "<<(total_sz*1.0/(load_chunk_count_sum*chunk_sz))<<"\n";
+				<<useful_vert_count_sum<<" "<<(1.0*useful_vert_count_sum*sizeof(vertex_t)/total_sz)<<"\n";
 			
 			if(front_count == 0 || level > 254) break;
 			prev_front_count = front_count;
 			front_count = 0;
 			++level;
-//#pragma omp barrier
-			//if(!tid) std::cout<<"\n\n\n";
-//#pragma omp barrier
+
 		}
 		if(!tid)system("killall iostat");
 

@@ -44,6 +44,8 @@ class cache_driver
 		long save_sz;
 		long load_chunk_count;
 
+		long useful_vert_count;
+
 	public:
 		cache_driver(){};
 		cache_driver(	

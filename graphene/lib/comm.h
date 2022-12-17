@@ -23,6 +23,8 @@
 #include <limits.h>
 #include <sstream>
 
+#include <linux/mman.h> // for MAP_HUGE_2MB
+
 #define errExit(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
 //#define MAX_NUM_ELEMENTS (long)134217728 

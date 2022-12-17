@@ -62,6 +62,14 @@ void beg_pos_2d (
 	if(is_beg_done == true)
 	{
 		printf("beg_pos is already computed\n");
+
+		//dealloc arrays
+		for(int i = 0; i < num_rows; i++)
+			for(int j = 0; j < num_cols; j++)
+				delete degree[i*num_cols + j];
+		
+		delete[] degree;
+		
 		return;
 	}
 
@@ -100,18 +108,22 @@ void beg_pos_2d (
 				 *inst = new bin_struct_reader<file_vertex_t, index_t>
 				 ((const char *)filename);
 
+			vertex_t src, dest;
+			int my_row, my_col;
+			index_t *my_degree;
+
 			 for(index_t i = 0; i < inst->num_edges; i++)
 			 {
-				 vertex_t src = (vertex_t) inst->edge_list[i].src;
-				 vertex_t dest= (vertex_t) inst->edge_list[i].dest;
+				src = (vertex_t) inst->edge_list[i].src;
+				dest= (vertex_t) inst->edge_list[i].dest;
 
-				 int my_row = aligned_par<vertex_t, index_t>
+				my_row = aligned_par<vertex_t, index_t>
 					 (row_ranger, num_rows, src);
 
-				 int my_col = misaligned_col<vertex_t, index_t>
+				my_col = misaligned_col<vertex_t, index_t>
 					(col_ranger,  num_cols, dest, my_row);
 				
-				 index_t *my_degree = degree[my_row * num_cols + my_col];
+				my_degree = degree[my_row * num_cols + my_col];
 				 __sync_fetch_and_add(my_degree + 
 						 src - row_ranger[my_row], 1);
 			 }

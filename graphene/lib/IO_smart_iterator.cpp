@@ -30,7 +30,7 @@ IO_smart_iterator::IO_smart_iterator(
 			beg_pos, MAX_USELESS, io_limit, p_func)
 {
 	//reqt_list
-	reqt_list = (index_t *)mmap(NULL, sizeof(index_t) * total_blks * 10,
+	reqt_list = (index_t *)mmap(NULL, sizeof(index_t) * total_blks * 4,  //zhenxin: 原来是*10, Yahoo的pagerank太大了，改成4
 	//reqt_list = (index_t *)mmap(NULL, sizeof(index_t) * 33554432,//FOR FRIENDSTER/TWITTER
 			PROT_READ | PROT_WRITE,MAP_PRIVATE | MAP_ANONYMOUS 
 			| MAP_HUGETLB | MAP_HUGE_2MB, 0, 0);	
