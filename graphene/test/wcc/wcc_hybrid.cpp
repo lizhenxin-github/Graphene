@@ -5,6 +5,9 @@
 // NOTIFIED AS FOLLOW SERCH "COLOR POLUTION"
 //-----------------COMMENTS END-------------------------------------
 //
+
+//（1）执行一次BFS，找到出度最大的degree的BFS图
+//（2）遍历所有点，看是否与最大BFS图相连
 #include "cache_driver.h"
 #include "IO_smart_iterator.h"
 #include <stdlib.h>

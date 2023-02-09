@@ -627,7 +627,7 @@ void IO_smart_iterator::req_convert_list()
 							{
 								reqt_list[reqt_blk_count]= j;
 								++reqt_blk_count;
-								assert(reqt_blk_count < (total_blks * 10));
+								assert(reqt_blk_count < (total_blks * 4)); //zhenxin:原来是*10
 								//assert(reqt_blk_count < 33554432);
 							}
 						}

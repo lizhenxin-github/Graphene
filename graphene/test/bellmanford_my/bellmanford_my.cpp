@@ -1,3 +1,7 @@
+// 根据ligra修改。
+// steps: init （1）读取所有节点加入集合, SP初始为无穷大
+// （2）遍历集合所有节点，假如sp[v]+weight
+//(3)上一步修改了的vert d，加入集合，从2循环直到集合为空。
 #include "cache_driver.h"
 #include "IO_smart_iterator.h"
 #include <stdlib.h>
@@ -27,9 +31,9 @@ int main(int argc, char **argv)
 			  << "/path/to/beg_pos_dir /path/to/csr_dir "
 			  << "beg_header csr_header num_chunks "
 			  << "chunk_sz (#bytes) concurr_IO_ctx "
-			  << "max_continuous_useless_blk ring_vert_count num_buffs source\n";
+			  << "max_continuous_useless_blk ring_vert_count num_buffs\n";
 
-	if (argc != 15)
+	if (argc != 14)
 	{
 		fprintf(stdout, "Wrong input\n");
 		exit(-1);
@@ -53,11 +57,11 @@ int main(int argc, char **argv)
 	const index_t MAX_USELESS = atoi(argv[11]); // bitmap合并中最大能不连续的大小
 	const index_t ring_vert_count = atoi(argv[12]);
 	const index_t num_buffs = atoi(argv[13]);
-	vertex_t root = (vertex_t)atol(argv[14]);
 
 	assert(NUM_THDS == (row_par * col_par * 2));
 	sa_t *sa = NULL;
-	index_t *comm = new index_t[NUM_THDS]; // 每个分区的结点数量？
+	sa_t *IDs = NULL;
+	index_t *comm = new index_t[NUM_THDS];
 	vertex_t **front_queue_ptr;
 	index_t *front_count_ptr;
 	vertex_t *col_ranger_ptr;
@@ -82,7 +86,15 @@ int main(int argc, char **argv)
 		std::cout << "Page size wrong\n";
 		exit(-1);
 	}
-	sa_t *sa_dummy = NULL;
+
+	IDs = (sa_t *)mmap(NULL, sizeof(sa_t) * vert_count,
+					   PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB | MAP_HUGE_2MB, 0, 0);
+	//| MAP_HUGETLB , 0, 0);
+	if (IDs == MAP_FAILED)
+	{
+		perror("mmap");
+		exit(-1);
+	}
 
 	char cmd[256];
 	sprintf(cmd, "%s", "iostat -x 1 -k > iostat_bfs.log&");
@@ -91,32 +103,41 @@ int main(int argc, char **argv)
 	int *semaphore_acq = new int[1];
 	int *semaphore_flag = new int[1];
 
-#ifdef PIN_CPU
-	//***************pin cpu ***************************//
+	//	gpu_semaphore[0]=1;
+	// omp_lock_t gpu_semaphore;
+	// omp_init_lock(&gpu_semaphore);
+	// 0 1 2 3 4 5 6 7 8 9 10 11 12 13 28 29 30 31 32 33 34 35 36 37 38 39 40 41
+	// 14 15 16 17 18 19 20 21 22 23 24 25 26 27 42 43 44 45 46 47 48 49 50 51 52 53 54 55
+	// int core_id[8]={0, 2, 4, 6, 14, 16, 18, 20};
+	// int core_id[16]={0, 2, 4, 6, 8, 10, 12, 28, 14, 16, 18, 20, 22, 24, 26, 42};
+	// int core_id[16]={0, 2, 4, 6, 8, 10, 12, 28, 30, 32, 34, 36, 38, 40, 1, 3};
 
-	// hardware information for server YQ3.
-	// available: 2 nodes (0-1)
-	// node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71
-	// node 0 size: 64092 MB
-	// node 0 free: 2644 MB
-	// node 1 cpus: 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95
-	// node 1 size: 64470 MB
-	// node 1 free: 347 MB
+	// 0 1 2 3 4 5 12 13 14 15 16 17
+	// 6 7 8 9 10 11 18 19 20 21 22 23
+	//	int socket_one[12]={0, 6, 1, 7, 2, 8, 3, 9, 4, 10, 5, 11};
+	//	int socket_two[12]={12, 18, 13, 19, 14, 20, 15, 21, 16, 22, 17, 23};
 
-	int socket_one[48] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71};
-	int socket_two[48] = {24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95};
+	int socket_one[12] = {0, 1, 2, 3, 4, 5, 12, 13, 14, 15, 16, 17};
+	int socket_two[12] = {6, 7, 8, 9, 10, 11, 18, 19, 20, 21, 22, 23};
 
-	int socket_all[96] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95};
-#endif
+	// memset(sa, INFTY, sizeof(sa_t)*vert_count);
+	// sa[root] = 0;
 
-	memset(sa, INFTY, sizeof(sa_t) * vert_count);
-	sa[root] = 0;
+	// 与bfs不同，wcc第一轮是遍历所有节点,所以所有节点的sa都设置为0，在第一轮全部读取。
+	memset(sa, 0, sizeof(sa_t) * vert_count);
+
+	// 初始IDs
+	for (index_t i = 0; i < vert_count; i++)
+	{
+		IDs[i] = i;
+	}
+
 	IO_smart_iterator **it_comm = new IO_smart_iterator *[NUM_THDS];
 
 	double tm = 0;
-#pragma omp parallel                        \
-num_threads(NUM_THDS)                       \
-	shared(sa, root, comm, front_queue_ptr, \
+#pragma omp parallel                       \
+num_threads(NUM_THDS)                      \
+	shared(sa, IDs, comm, front_queue_ptr, \
 		   front_count_ptr, col_ranger_ptr)
 	{
 		std::stringstream travss;
@@ -136,11 +157,10 @@ num_threads(NUM_THDS)                       \
 		int comp_tid = tid >> 1;
 		comp_t *neighbors;
 		index_t *beg_pos;
-
-#ifdef PIN_CPU
-		// 需要保证IO线程与计算线程在同一个numa节点上
-		pin_thread(socket_all, tid);
-#endif
+		// if(tid < 16)
+		//	pin_thread_socket(socket_one, 12);
+		// else
+		//	pin_thread_socket(socket_two, 12);
 
 		index_t prev_front_count = 0;
 		index_t front_count = 0;
@@ -158,17 +178,21 @@ num_threads(NUM_THDS)                       \
 					beg_header, csr_header,
 					num_chunks,
 					chunk_sz,
-					sa, sa_dummy, beg_pos,
+					sa, IDs, beg_pos,
 					num_buffs,
 					ring_vert_count,
 					MAX_USELESS,
 					io_limit,
 					&is_active);
 
-			front_queue_ptr[comp_tid][0] = root;
-			front_count_ptr[comp_tid] = 1;
+			// front_queue_ptr[comp_tid][0] = root;
+			// front_count_ptr[comp_tid] = 1;
 
-			prev_front_count = front_count_ptr[comp_tid];
+			// prev_front_count = front_count_ptr[comp_tid];
+
+			// 直接初始为需要读取所有节点，那必定触发 req_translator（level）而不是req_translator_queue();
+			prev_front_count = vert_count;
+
 			it_comm[tid] = it_temp;
 			it_comm[tid]->is_bsp_done = false;
 		}
@@ -201,10 +225,15 @@ num_threads(NUM_THDS)                       \
 			if ((tid & 1) == 0)
 			{
 				it->is_bsp_done = false;
+
 				if ((prev_front_count * 100.0) / vert_count > 2.0)
+				{ // 需要读取的front数量多，那就从sa[]数组中遍历找出需要的块
+					// 优点：只要管自己partition里的sa[]，而front需要找所有线程的front
 					it->req_translator(level);
+				}
 				else
 				{
+					// 假如需要读取的front数量少，那就直接从front记录的数组里读出来。
 					it->req_translator_queue();
 				}
 			}
@@ -257,12 +286,24 @@ num_threads(NUM_THDS)                       \
 								it->cd->useful_vert_count++;
 
 								vertex_t nebr = pinst->buff[beg];
-								if (sa[nebr] == INFTY)
+								// if (sa[nebr] == INFTY)
+								// {
+								// 	sa[nebr] = level + 1;
+								// 	if (front_count <= it->col_ranger_end - it->col_ranger_beg)
+								// 		it->front_queue[comp_tid][front_count] = nebr;
+								// 	front_count++;
+								// }
+
+								sa_t origID = IDs[nebr];
+								if (IDs[nebr] > IDs[vert_id]) // 找到一个需要更新的nebr
 								{
-									sa[nebr] = level + 1;
-									if (front_count <= it->col_ranger_end - it->col_ranger_beg)
-										it->front_queue[comp_tid][front_count] = nebr;
-									front_count++;
+									if (writeMin(&IDs[nebr], IDs[vert_id])) // 成功更新，atomic
+									{
+										sa[nebr] = level + 1;
+										if (front_count <= it->col_ranger_end - it->col_ranger_beg)
+											it->front_queue[comp_tid][front_count] = nebr;
+										front_count++;
+									}
 								}
 							}
 						}

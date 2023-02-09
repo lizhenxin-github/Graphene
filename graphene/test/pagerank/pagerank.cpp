@@ -1,3 +1,5 @@
+//version: pagerank, pull版本。
+
 #include "cache_driver.h"
 #include "IO_smart_iterator.h"
 #include <stdlib.h>
@@ -159,7 +161,7 @@ int main(int argc, char **argv)
 	double tm = 0;
 #pragma omp parallel \
 	num_threads (NUM_THDS) \
-	shared(sa_next,sa_curr,rev_odeg_glb,comm)
+	shared(sa_next,sa_curr,rev_odeg_glb,comm,odeg_glb)
 	{
 		std::stringstream travss;
 		travss.str("");

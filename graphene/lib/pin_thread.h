@@ -3,7 +3,8 @@
 
 #include <sched.h>
 
-int pin_thread(
+//绑定到具体的core.
+int pin_thread( 
 	int *core_id,
 	int tid
 ){
@@ -19,6 +20,7 @@ int pin_thread(
 	return 0;
 }
 
+//绑定到一个socket，不指定具体的core.
 int pin_thread_socket(int *core_id, int num_cores){
 
 	pthread_t thread;

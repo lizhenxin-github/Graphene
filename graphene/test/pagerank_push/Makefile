@@ -1,4 +1,4 @@
-exe = aio_pagerank_push.bin
+exe = aio_pagerank.bin
 
 cc = "$(shell which g++)" 
 cucc= "$(shell which nvcc)"

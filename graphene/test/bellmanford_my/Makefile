@@ -1,4 +1,4 @@
-exe = aio_pagerank_push.bin
+exe = aio_wcc_hybrid.bin
 
 cc = "$(shell which g++)" 
 cucc= "$(shell which nvcc)"
@@ -7,7 +7,9 @@ cucc= "$(shell which nvcc)"
 #cuflags= -gencode=arch=compute_35,code=\"sm_35,compute_35\"  -Xptxas -v -Xcudafe -\# -Xptxas -abi=no -m64 -I"/usr/local/cuda/bin/../include" -I. -I../../../ -I../../../b40c -O3 -D_FORCE_INLINES
 flags = -I../../lib/ -I. -laio -fopenmp -O3
 
-flags+=-DKV_BOTH_SORTING -DBLK_SZ=512 
+
+flags+=-DKV_BOTH_SORTING -DWCC_KV -DBLK_SZ=512 
+
 ifeq ($(time), 1)
   cuflags+= -DTIMING
 	flags += -DTIMING
@@ -24,6 +26,7 @@ objs = $(patsubst %.cpp,%.o,$(wildcard ../../lib/*.cpp)) \
 deps =	$(wildcard ../../lib/*.h) \
 				$(wildcard ../../lib/*.cuh) \
 				$(wildcard *.h) \
+				$(wildcard *.hpp) \
 				$(wildcard *.cuh) \
 				Makefile
 

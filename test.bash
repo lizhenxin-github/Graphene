@@ -176,17 +176,192 @@ if [ $algorithms = "BFS" ] || [ $algorithms = "ALL" ]; then
     fi
 fi
 
-if [ $algorithms = "PageRank" ] || [ $algorithms = "ALL" ]; then
+# if [ $algorithms = "PageRank" ] || [ $algorithms = "ALL" ]; then
+#     echo "================================================================================================================"
+#     echo "====================================================PageRank===================================================="
+#     echo "================================================================================================================"
+#     # run PageRank
+
+#     if [ $datasets = "Twitter" ] || [ $datasets = "ALL" ]; then
+#         for ((times = 0; times < $epochs; times++)); do
+#             echo "====================================================Twitter===================================================="
+#             # Twitter: num_iterations = 10
+#             ./graphene/test/pagerank/aio_pagerank.bin 6 8 96 \
+#                 /home/zorax/data/Twitter/row_col_6x8 /home/zorax/data/Twitter/row_col_6x8 \
+#                 out.txt-split_beg out.txt-split_csr \
+#                 $chunknum $chunksize 4 32 16 128 10
+#             wait
+#         done
+#     fi
+
+#     if [ $datasets = "Friendster" ] || [ $datasets = "ALL" ]; then
+#         for ((times = 0; times < $epochs; times++)); do
+#             echo "====================================================Friendster===================================================="
+#             # FriendSter: num_iterations = 10
+#             ./graphene/test/pagerank/aio_pagerank.bin 6 8 96 \
+#                 /home/zorax/data/Friendster/row_col_6x8 /home/zorax/data/Friendster/row_col_6x8 \
+#                 out.txt-split_beg out.txt-split_csr \
+#                 $chunknum $chunksize 4 32 16 128 10
+#             wait
+#         done
+#     fi
+
+#     if [ $datasets = "Ukdomain" ] || [ $datasets = "ALL" ]; then
+#         for ((times = 0; times < $epochs; times++)); do
+#             echo "====================================================Ukdomain===================================================="
+#             # Ukdomain: num_iterations = 10
+#             ./graphene/test/pagerank/aio_pagerank.bin 6 8 96 \
+#                 /home/zorax/data/Ukdomain/row_col_6x8 /home/zorax/data/Ukdomain/row_col_6x8 \
+#                 out.txt-split_beg out.txt-split_csr \
+#                 $chunknum $chunksize 4 32 16 128 10
+#             wait
+#         done
+#     fi
+
+#     if [ $datasets = "Kron28" ] || [ $datasets = "ALL" ]; then
+#         for ((times = 0; times < $epochs; times++)); do
+#             echo "====================================================Kron28===================================================="
+#             # Kron28: num_iterations = 10
+#             ./graphene/test/pagerank/aio_pagerank.bin 6 8 96 \
+#                 /home/zorax/data/Kron28/row_col_6x8 /home/zorax/data/Kron28/row_col_6x8 \
+#                 out.txt-split_beg out.txt-split_csr \
+#                 $chunknum $chunksize 4 32 16 128 10
+#             wait
+#         done
+#     fi
+
+#     if [ $datasets = "Yahoo" ] || [ $datasets = "ALL" ]; then
+#         for ((times = 0; times < $epochs; times++)); do
+#             echo "====================================================Yahoo===================================================="
+#             # Yahoo: num_iterations = 10
+#             ./graphene/test/pagerank/aio_pagerank.bin 6 8 96 \
+#                 /home/zorax/data/Yahoo/row_col_6x8 /home/zorax/data/Yahoo/row_col_6x8 \
+#                 out.txt-split_beg out.txt-split_csr \
+#                 $chunknum $chunksize 4 32 16 128 10
+#             wait
+#         done
+#     fi
+
+#     if [ $datasets = "Kron29" ] || [ $datasets = "ALL" ]; then
+#         for ((times = 0; times < $epochs; times++)); do
+#             echo "====================================================Kron29===================================================="
+#             # Kron29: num_iterations = 10
+#             ./graphene/test/pagerank/aio_pagerank.bin 6 8 96 \
+#                 /home/zorax/data/Kron29/row_col_6x8 /home/zorax/data/Kron29/row_col_6x8 \
+#                 out.txt-split_beg out.txt-split_csr \
+#                 $chunknum $chunksize 4 32 16 128 10
+#             wait
+#         done
+#     fi
+
+#     if [ $datasets = "Kron30" ] || [ $datasets = "ALL" ]; then
+#         for ((times = 0; times < $epochs; times++)); do
+#             echo "====================================================Kron30===================================================="
+#             # Kron30: num_iterations = 10
+#             ./graphene/test/pagerank/aio_pagerank.bin 6 8 96 \
+#                 /home/zorax/data/Kron30/row_col_6x8 /home/zorax/data/Kron30/row_col_6x8 \
+#                 out.txt-split_beg out.txt-split_csr \
+#                 $chunknum $chunksize 4 32 16 128 10
+#             wait
+#         done
+#     fi
+# fi
+
+# if [ $algorithms = "WCC" ] || [ $algorithms = "ALL" ]; then
+#     echo "================================================================================================================"
+#     echo "======================================================WCC======================================================="
+#     echo "================================================================================================================"
+#     # run Weakly Connected Component
+
+#     if [ $datasets = "Twitter" ] || [ $datasets = "ALL" ]; then
+#         for ((times = 0; times < $epochs; times++)); do
+#             echo "====================================================Twitter===================================================="
+#             ./graphene/test/wcc/aio_wcc_hybrid.bin 6 8 96 \
+#                 /home/zorax/data/Twitter/row_col_6x8 /home/zorax/data/Twitter/row_col_6x8 \
+#                 out.txt-split_beg out.txt-split_csr \
+#                 $chunknum $chunksize 4 32 16 128
+#             wait
+#         done
+#     fi
+
+#     if [ $datasets = "Friendster" ] || [ $datasets = "ALL" ]; then
+#         for ((times = 0; times < $epochs; times++)); do
+#             echo "====================================================Friendster===================================================="
+#             ./graphene/test/wcc/aio_wcc_hybrid.bin 6 8 96 \
+#                 /home/zorax/data/Friendster/row_col_6x8 /home/zorax/data/Friendster/row_col_6x8 \
+#                 out.txt-split_beg out.txt-split_csr \
+#                 $chunknum $chunksize 4 32 16 128
+#             wait
+#         done
+#     fi
+
+#     if [ $datasets = "Ukdomain" ] || [ $datasets = "ALL" ]; then
+#         for ((times = 0; times < $epochs; times++)); do
+#             echo "====================================================Ukdomain===================================================="
+#             ./graphene/test/wcc/aio_wcc_hybrid.bin 6 8 96 \
+#                 /home/zorax/data/Ukdomain/row_col_6x8 /home/zorax/data/Ukdomain/row_col_6x8 \
+#                 out.txt-split_beg out.txt-split_csr \
+#                 $chunknum $chunksize 4 32 16 128
+#             wait
+#         done
+#     fi
+
+#     if [ $datasets = "Kron28" ] || [ $datasets = "ALL" ]; then
+#         for ((times = 0; times < $epochs; times++)); do
+#             echo "====================================================Kron28===================================================="
+#             ./graphene/test/wcc/aio_wcc_hybrid.bin 6 8 96 \
+#                 /home/zorax/data/Kron28/row_col_6x8 /home/zorax/data/Kron28/row_col_6x8 \
+#                 out.txt-split_beg out.txt-split_csr \
+#                 $chunknum $chunksize 4 32 16 128
+#             wait
+#         done
+#     fi
+
+#     if [ $datasets = "Yahoo" ] || [ $datasets = "ALL" ]; then
+#         for ((times = 0; times < $epochs; times++)); do
+#             echo "====================================================Yahoo===================================================="
+#             ./graphene/test/wcc/aio_wcc_hybrid.bin 6 8 96 \
+#                 /home/zorax/data/Yahoo/row_col_6x8 /home/zorax/data/Yahoo/row_col_6x8 \
+#                 out.txt-split_beg out.txt-split_csr \
+#                 $chunknum $chunksize 4 32 16 128
+#             wait
+#         done
+#     fi
+
+#     if [ $datasets = "Kron29" ] || [ $datasets = "ALL" ]; then
+#         for ((times = 0; times < $epochs; times++)); do
+#             echo "====================================================Kron29===================================================="
+#             ./graphene/test/wcc/aio_wcc_hybrid.bin 6 8 96 \
+#                 /home/zorax/data/Kron29/row_col_6x8 /home/zorax/data/Kron29/row_col_6x8 \
+#                 out.txt-split_beg out.txt-split_csr \
+#                 $chunknum $chunksize 4 32 16 128
+#             wait
+#         done
+#     fi
+
+#     if [ $datasets = "Kron30" ] || [ $datasets = "ALL" ]; then
+#         for ((times = 0; times < $epochs; times++)); do
+#             echo "====================================================Kron30===================================================="
+#             ./graphene/test/wcc/aio_wcc_hybrid.bin 6 8 96 \
+#                 /home/zorax/data/Kron30/row_col_6x8 /home/zorax/data/Kron30/row_col_6x8 \
+#                 out.txt-split_beg out.txt-split_csr \
+#                 $chunknum $chunksize 4 32 16 128
+#             wait
+#         done
+#     fi
+# fi
+
+if [ $algorithms = "PageRankPush" ] || [ $algorithms = "ALL" ]; then
     echo "================================================================================================================"
-    echo "====================================================PageRank===================================================="
+    echo "====================================================PageRankPush===================================================="
     echo "================================================================================================================"
-    # run PageRank
+    # run PageRank Push 
 
     if [ $datasets = "Twitter" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Twitter===================================================="
             # Twitter: num_iterations = 10
-            ./graphene/test/pagerank/aio_pagerank.bin 6 8 96 \
+            ./graphene/test/pagerank_push/aio_pagerank.bin 6 8 96 \
                 /home/zorax/data/Twitter/row_col_6x8 /home/zorax/data/Twitter/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128 10
@@ -198,7 +373,7 @@ if [ $algorithms = "PageRank" ] || [ $algorithms = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Friendster===================================================="
             # FriendSter: num_iterations = 10
-            ./graphene/test/pagerank/aio_pagerank.bin 6 8 96 \
+            ./graphene/test/pagerank_push/aio_pagerank.bin 6 8 96 \
                 /home/zorax/data/Friendster/row_col_6x8 /home/zorax/data/Friendster/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128 10
@@ -210,7 +385,7 @@ if [ $algorithms = "PageRank" ] || [ $algorithms = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Ukdomain===================================================="
             # Ukdomain: num_iterations = 10
-            ./graphene/test/pagerank/aio_pagerank.bin 6 8 96 \
+            ./graphene/test/pagerank_push/aio_pagerank.bin 6 8 96 \
                 /home/zorax/data/Ukdomain/row_col_6x8 /home/zorax/data/Ukdomain/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128 10
@@ -222,7 +397,7 @@ if [ $algorithms = "PageRank" ] || [ $algorithms = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Kron28===================================================="
             # Kron28: num_iterations = 10
-            ./graphene/test/pagerank/aio_pagerank.bin 6 8 96 \
+            ./graphene/test/pagerank_push/aio_pagerank.bin 6 8 96 \
                 /home/zorax/data/Kron28/row_col_6x8 /home/zorax/data/Kron28/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128 10
@@ -234,7 +409,7 @@ if [ $algorithms = "PageRank" ] || [ $algorithms = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Yahoo===================================================="
             # Yahoo: num_iterations = 10
-            ./graphene/test/pagerank/aio_pagerank.bin 6 8 96 \
+            ./graphene/test/pagerank_push/aio_pagerank.bin 6 8 96 \
                 /home/zorax/data/Yahoo/row_col_6x8 /home/zorax/data/Yahoo/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128 10
@@ -246,7 +421,7 @@ if [ $algorithms = "PageRank" ] || [ $algorithms = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Kron29===================================================="
             # Kron29: num_iterations = 10
-            ./graphene/test/pagerank/aio_pagerank.bin 6 8 96 \
+            ./graphene/test/pagerank_push/aio_pagerank.bin 6 8 96 \
                 /home/zorax/data/Kron29/row_col_6x8 /home/zorax/data/Kron29/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128 10
@@ -258,7 +433,7 @@ if [ $algorithms = "PageRank" ] || [ $algorithms = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Kron30===================================================="
             # Kron30: num_iterations = 10
-            ./graphene/test/pagerank/aio_pagerank.bin 6 8 96 \
+            ./graphene/test/pagerank_push/aio_pagerank.bin 6 8 96 \
                 /home/zorax/data/Kron30/row_col_6x8 /home/zorax/data/Kron30/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128 10
@@ -267,16 +442,16 @@ if [ $algorithms = "PageRank" ] || [ $algorithms = "ALL" ]; then
     fi
 fi
 
-if [ $algorithms = "WCC" ] || [ $algorithms = "ALL_NO" ]; then
+if [ $algorithms = "WCCPush" ] || [ $algorithms = "ALL" ]; then
     echo "================================================================================================================"
-    echo "======================================================WCC======================================================="
+    echo "======================================================WCCPush======================================================="
     echo "================================================================================================================"
     # run Weakly Connected Component
 
     if [ $datasets = "Twitter" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Twitter===================================================="
-            ./graphene/test/wcc/aio_wcc_hybrid.bin 6 8 96 \
+            ./graphene/test/wcc_push/aio_wcc_hybrid.bin 6 8 96 \
                 /home/zorax/data/Twitter/row_col_6x8 /home/zorax/data/Twitter/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -287,7 +462,7 @@ if [ $algorithms = "WCC" ] || [ $algorithms = "ALL_NO" ]; then
     if [ $datasets = "Friendster" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Friendster===================================================="
-            ./graphene/test/wcc/aio_wcc_hybrid.bin 6 8 96 \
+            ./graphene/test/wcc_push/aio_wcc_hybrid.bin 6 8 96 \
                 /home/zorax/data/Friendster/row_col_6x8 /home/zorax/data/Friendster/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -298,7 +473,7 @@ if [ $algorithms = "WCC" ] || [ $algorithms = "ALL_NO" ]; then
     if [ $datasets = "Ukdomain" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Ukdomain===================================================="
-            ./graphene/test/wcc/aio_wcc_hybrid.bin 6 8 96 \
+            ./graphene/test/wcc_push/aio_wcc_hybrid.bin 6 8 96 \
                 /home/zorax/data/Ukdomain/row_col_6x8 /home/zorax/data/Ukdomain/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -309,7 +484,7 @@ if [ $algorithms = "WCC" ] || [ $algorithms = "ALL_NO" ]; then
     if [ $datasets = "Kron28" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Kron28===================================================="
-            ./graphene/test/wcc/aio_wcc_hybrid.bin 6 8 96 \
+            ./graphene/test/wcc_push/aio_wcc_hybrid.bin 6 8 96 \
                 /home/zorax/data/Kron28/row_col_6x8 /home/zorax/data/Kron28/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -320,7 +495,7 @@ if [ $algorithms = "WCC" ] || [ $algorithms = "ALL_NO" ]; then
     if [ $datasets = "Yahoo" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Yahoo===================================================="
-            ./graphene/test/wcc/aio_wcc_hybrid.bin 6 8 96 \
+            ./graphene/test/wcc_push/aio_wcc_hybrid.bin 6 8 96 \
                 /home/zorax/data/Yahoo/row_col_6x8 /home/zorax/data/Yahoo/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -331,7 +506,7 @@ if [ $algorithms = "WCC" ] || [ $algorithms = "ALL_NO" ]; then
     if [ $datasets = "Kron29" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Kron29===================================================="
-            ./graphene/test/wcc/aio_wcc_hybrid.bin 6 8 96 \
+            ./graphene/test/wcc_push/aio_wcc_hybrid.bin 6 8 96 \
                 /home/zorax/data/Kron29/row_col_6x8 /home/zorax/data/Kron29/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -342,7 +517,91 @@ if [ $algorithms = "WCC" ] || [ $algorithms = "ALL_NO" ]; then
     if [ $datasets = "Kron30" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Kron30===================================================="
-            ./graphene/test/wcc/aio_wcc_hybrid.bin 6 8 96 \
+            ./graphene/test/wcc_push/aio_wcc_hybrid.bin 6 8 96 \
+                /home/zorax/data/Kron30/row_col_6x8 /home/zorax/data/Kron30/row_col_6x8 \
+                out.txt-split_beg out.txt-split_csr \
+                $chunknum $chunksize 4 32 16 128
+            wait
+        done
+    fi
+fi
+
+if [ $algorithms = "KCoreMy" ] || [ $algorithms = "ALL" ]; then
+    echo "================================================================================================================"
+    echo "======================================================KCoreMy======================================================="
+    echo "================================================================================================================"
+    # run KCore
+
+    if [ $datasets = "Twitter" ] || [ $datasets = "ALL" ]; then
+        for ((times = 0; times < $epochs; times++)); do
+            echo "====================================================Twitter===================================================="
+            ./graphene/test/kcore_my/aio_kcore_my.bin 6 8 96 \
+                /home/zorax/data/Twitter/row_col_6x8 /home/zorax/data/Twitter/row_col_6x8 \
+                out.txt-split_beg out.txt-split_csr \
+                $chunknum $chunksize 4 32 16 128
+            wait
+        done
+    fi
+
+    if [ $datasets = "Friendster" ] || [ $datasets = "ALL" ]; then
+        for ((times = 0; times < $epochs; times++)); do
+            echo "====================================================Friendster===================================================="
+            ./graphene/test/kcore_my/aio_kcore_my.bin 6 8 96 \
+                /home/zorax/data/Friendster/row_col_6x8 /home/zorax/data/Friendster/row_col_6x8 \
+                out.txt-split_beg out.txt-split_csr \
+                $chunknum $chunksize 4 32 16 128
+            wait
+        done
+    fi
+
+    if [ $datasets = "Ukdomain" ] || [ $datasets = "ALL" ]; then
+        for ((times = 0; times < $epochs; times++)); do
+            echo "====================================================Ukdomain===================================================="
+            ./graphene/test/kcore_my/aio_kcore_my.bin 6 8 96 \
+                /home/zorax/data/Ukdomain/row_col_6x8 /home/zorax/data/Ukdomain/row_col_6x8 \
+                out.txt-split_beg out.txt-split_csr \
+                $chunknum $chunksize 4 32 16 128
+            wait
+        done
+    fi
+
+    if [ $datasets = "Kron28" ] || [ $datasets = "ALL" ]; then
+        for ((times = 0; times < $epochs; times++)); do
+            echo "====================================================Kron28===================================================="
+            ./graphene/test/kcore_my/aio_kcore_my.bin 6 8 96 \
+                /home/zorax/data/Kron28/row_col_6x8 /home/zorax/data/Kron28/row_col_6x8 \
+                out.txt-split_beg out.txt-split_csr \
+                $chunknum $chunksize 4 32 16 128
+            wait
+        done
+    fi
+
+    if [ $datasets = "Yahoo" ] || [ $datasets = "ALL" ]; then
+        for ((times = 0; times < $epochs; times++)); do
+            echo "====================================================Yahoo===================================================="
+            ./graphene/test/kcore_my/aio_kcore_my.bin 6 8 96 \
+                /home/zorax/data/Yahoo/row_col_6x8 /home/zorax/data/Yahoo/row_col_6x8 \
+                out.txt-split_beg out.txt-split_csr \
+                $chunknum $chunksize 4 32 16 128
+            wait
+        done
+    fi
+
+    if [ $datasets = "Kron29" ] || [ $datasets = "ALL" ]; then
+        for ((times = 0; times < $epochs; times++)); do
+            echo "====================================================Kron29===================================================="
+            ./graphene/test/kcore_my/aio_kcore_my.bin 6 8 96 \
+                /home/zorax/data/Kron29/row_col_6x8 /home/zorax/data/Kron29/row_col_6x8 \
+                out.txt-split_beg out.txt-split_csr \
+                $chunknum $chunksize 4 32 16 128
+            wait
+        done
+    fi
+
+    if [ $datasets = "Kron30" ] || [ $datasets = "ALL" ]; then
+        for ((times = 0; times < $epochs; times++)); do
+            echo "====================================================Kron30===================================================="
+            ./graphene/test/kcore_my/aio_kcore_my.bin 6 8 96 \
                 /home/zorax/data/Kron30/row_col_6x8 /home/zorax/data/Kron30/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128

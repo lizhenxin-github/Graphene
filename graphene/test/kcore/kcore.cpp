@@ -5,6 +5,10 @@
 //be careful
 //we cannot easily add from there at initial step
 
+
+//原始的kcore固定了初始的k值，执行步骤 （1）找到出度小于等于k的点，加入点集合
+//（2）遍历点集合中的点，并且他们的邻居的度--,假如邻居的度小于k了，加入点集合
+//（3）重复2.
 #include "cache_driver.h"
 #include "IO_smart_iterator.h"
 #include <stdlib.h>
