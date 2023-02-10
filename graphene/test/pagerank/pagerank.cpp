@@ -13,6 +13,8 @@
 #include "get_vert_count.hpp"
 #include "get_col_ranger.hpp"
 
+#define PIN_CPU
+
 inline bool is_active
 (index_t vert_id,
 sa_t criterion,

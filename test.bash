@@ -452,7 +452,7 @@ if [ $algorithms = "WCCPush" ] || [ $algorithms = "ALL" ]; then
     if [ $datasets = "Twitter" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Twitter===================================================="
-            ./graphene/test/wcc_push/aio_wcc_hybrid.bin 6 8 96 \
+            ./graphene/test/wcc_push/aio_wcc_push.bin 6 8 96 \
                 /home/zorax/data/Twitter/row_col_6x8 /home/zorax/data/Twitter/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -463,7 +463,7 @@ if [ $algorithms = "WCCPush" ] || [ $algorithms = "ALL" ]; then
     if [ $datasets = "Friendster" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Friendster===================================================="
-            ./graphene/test/wcc_push/aio_wcc_hybrid.bin 6 8 96 \
+            ./graphene/test/wcc_push/aio_wcc_push.bin 6 8 96 \
                 /home/zorax/data/Friendster/row_col_6x8 /home/zorax/data/Friendster/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -474,7 +474,7 @@ if [ $algorithms = "WCCPush" ] || [ $algorithms = "ALL" ]; then
     if [ $datasets = "Ukdomain" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Ukdomain===================================================="
-            ./graphene/test/wcc_push/aio_wcc_hybrid.bin 6 8 96 \
+            ./graphene/test/wcc_push/aio_wcc_push.bin 6 8 96 \
                 /home/zorax/data/Ukdomain/row_col_6x8 /home/zorax/data/Ukdomain/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -485,7 +485,7 @@ if [ $algorithms = "WCCPush" ] || [ $algorithms = "ALL" ]; then
     if [ $datasets = "Kron28" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Kron28===================================================="
-            ./graphene/test/wcc_push/aio_wcc_hybrid.bin 6 8 96 \
+            ./graphene/test/wcc_push/aio_wcc_push.bin 6 8 96 \
                 /home/zorax/data/Kron28/row_col_6x8 /home/zorax/data/Kron28/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -496,7 +496,7 @@ if [ $algorithms = "WCCPush" ] || [ $algorithms = "ALL" ]; then
     if [ $datasets = "Yahoo" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Yahoo===================================================="
-            ./graphene/test/wcc_push/aio_wcc_hybrid.bin 6 8 96 \
+            ./graphene/test/wcc_push/aio_wcc_push.bin 6 8 96 \
                 /home/zorax/data/Yahoo/row_col_6x8 /home/zorax/data/Yahoo/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -507,7 +507,7 @@ if [ $algorithms = "WCCPush" ] || [ $algorithms = "ALL" ]; then
     if [ $datasets = "Kron29" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Kron29===================================================="
-            ./graphene/test/wcc_push/aio_wcc_hybrid.bin 6 8 96 \
+            ./graphene/test/wcc_push/aio_wcc_push.bin 6 8 96 \
                 /home/zorax/data/Kron29/row_col_6x8 /home/zorax/data/Kron29/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -518,7 +518,7 @@ if [ $algorithms = "WCCPush" ] || [ $algorithms = "ALL" ]; then
     if [ $datasets = "Kron30" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Kron30===================================================="
-            ./graphene/test/wcc_push/aio_wcc_hybrid.bin 6 8 96 \
+            ./graphene/test/wcc_push/aio_wcc_push.bin 6 8 96 \
                 /home/zorax/data/Kron30/row_col_6x8 /home/zorax/data/Kron30/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -621,7 +621,7 @@ if [ $algorithms = "ONEHOT" ] || [ $algorithms = "ALL" ]; then
     if [ $datasets = "Twitter" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Twitter===================================================="
-            ./graphene/test/bfs/aio_one_hot.bin 6 8 96 \
+            ./graphene/test/onehot/aio_one_hot.bin 6 8 96 \
                 /home/zorax/data/Twitter/row_col_6x8 /home/zorax/data/Twitter/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -632,7 +632,7 @@ if [ $algorithms = "ONEHOT" ] || [ $algorithms = "ALL" ]; then
     if [ $datasets = "Friendster" ] || [ $datasets = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Friendster===================================================="
-            ./graphene/test/bfs/aio_one_hot.bin 6 8 96 \
+            ./graphene/test/onehot/aio_one_hot.bin 6 8 96 \
                 /home/zorax/data/Friendster/row_col_6x8 /home/zorax/data/Friendster/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -644,7 +644,7 @@ if [ $algorithms = "ONEHOT" ] || [ $algorithms = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Ukdomain===================================================="
             # Ukdomain: 5699262 64976639 88961668
-            ./graphene/test/bfs/aio_one_hot.bin 6 8 96 \
+            ./graphene/test/onehot/aio_one_hot.bin 6 8 96 \
                 /home/zorax/data/Ukdomain/row_col_6x8 /home/zorax/data/Ukdomain/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -656,7 +656,7 @@ if [ $algorithms = "ONEHOT" ] || [ $algorithms = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Kron28===================================================="
             # Kron28: 254655025 39454459 105161820
-            ./graphene/test/bfs/aio_one_hot.bin 6 8 96 \
+            ./graphene/test/onehot/aio_one_hot.bin 6 8 96 \
                 /home/zorax/data/Kron28/row_col_6x8 /home/zorax/data/Kron28/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -668,7 +668,7 @@ if [ $algorithms = "ONEHOT" ] || [ $algorithms = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================YahooWeb===================================================="
             # YahooWeb: 35005211 10757586 20414463
-            ./graphene/test/bfs/aio_one_hot.bin 6 8 96 \
+            ./graphene/test/onehot/aio_one_hot.bin 6 8 96 \
                 /home/zorax/data/Yahoo/row_col_6x8 /home/zorax/data/Yahoo/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -680,7 +680,7 @@ if [ $algorithms = "ONEHOT" ] || [ $algorithms = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Kron29===================================================="
             # Kron29: 310059974 104024179 233665123
-            ./graphene/test/bfs/aio_one_hot.bin 6 8 96 \
+            ./graphene/test/onehot/aio_one_hot.bin 6 8 96 \
                 /home/zorax/data/Kron29/row_col_6x8 /home/zorax/data/Kron29/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128
@@ -692,7 +692,7 @@ if [ $algorithms = "ONEHOT" ] || [ $algorithms = "ALL" ]; then
         for ((times = 0; times < $epochs; times++)); do
             echo "====================================================Kron30===================================================="
             # Kron30: 233665123  980258108 485560280
-            ./graphene/test/bfs/aio_one_hot.bin 6 8 96 \
+            ./graphene/test/onehot/aio_one_hot.bin 6 8 96 \
                 /home/zorax/data/Kron30/row_col_6x8 /home/zorax/data/Kron30/row_col_6x8 \
                 out.txt-split_beg out.txt-split_csr \
                 $chunknum $chunksize 4 32 16 128

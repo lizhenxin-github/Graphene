@@ -10,6 +10,8 @@
 #include "get_vert_count.hpp"
 #include "get_col_ranger.hpp"
 
+#define PIN_CPU
+
 inline bool is_active(index_t vert_id,
 					  sa_t criterion,
 					  sa_t *sa, sa_t *prior)
@@ -139,6 +141,7 @@ num_threads(NUM_THDS)                       \
 
 #ifdef PIN_CPU
 		// 需要保证IO线程与计算线程在同一个numa节点上
+		// printf("*****************tid==%d\n", tid);
 		pin_thread(socket_all, tid);
 #endif
 

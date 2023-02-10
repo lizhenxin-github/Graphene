@@ -10,6 +10,8 @@
 #include "get_vert_count.hpp"
 #include "get_col_ranger.hpp"
 
+#define PIN_CPU
+
 inline bool is_active(index_t vert_id,
 					  sa_t criterion,
 					  sa_t *sa, sa_t *prior)
@@ -29,7 +31,7 @@ int main(int argc, char **argv)
 			  << "chunk_sz (#bytes) concurr_IO_ctx "
 			  << "max_continuous_useless_blk ring_vert_count num_buffs source\n";
 
-	if (argc != 15)
+	if (argc != 14)
 	{
 		fprintf(stdout, "Wrong input\n");
 		exit(-1);

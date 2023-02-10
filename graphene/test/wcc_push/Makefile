@@ -1,4 +1,4 @@
-exe = aio_wcc_hybrid.bin
+exe = aio_wcc_push.bin
 
 cc = "$(shell which g++)" 
 cucc= "$(shell which nvcc)"

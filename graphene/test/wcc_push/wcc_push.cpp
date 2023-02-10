@@ -14,6 +14,8 @@
 #include "get_vert_count.hpp"
 #include "get_col_ranger.hpp"
 
+#define PIN_CPU
+
 inline bool is_active(index_t vert_id,
 					  sa_t criterion,
 					  sa_t *sa, sa_t *prior)
@@ -158,7 +160,7 @@ num_threads(NUM_THDS)                      \
 		int comp_tid = tid >> 1;
 		comp_t *neighbors;
 		index_t *beg_pos;
-		
+
 #ifdef PIN_CPU
 		// 需要保证IO线程与计算线程在同一个numa节点上
 		pin_thread(socket_all, tid);
@@ -459,7 +461,7 @@ num_threads(NUM_THDS)                      \
 						  << total_sz << " "
 						  << useful_vert_count_sum << " " << (1.0 * useful_vert_count_sum * sizeof(vertex_t) / total_sz) << "\n";
 
-			if (front_count == 0 || level > 254) //zhenxin: 本来是254，统一改成2 
+			if (front_count == 0 || level > 254) // zhenxin: 本来是254，统一改成2
 				break;
 			prev_front_count = front_count;
 			front_count = 0;
