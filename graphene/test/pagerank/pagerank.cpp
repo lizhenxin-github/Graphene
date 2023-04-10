@@ -280,10 +280,19 @@ int main(int argc, char **argv)
 			}
 
 			index_t front_count = 0;
-			double convert_tm = 0;	
-			double ltm=wtime();
-#pragma omp barrier
 
+			double ltm = wtime();
+			double convert_tm = wtime();
+			if ((tid & 1) == 0)
+			{
+				it->is_bsp_done = false;    //zhenxin: 必须增加这行，不然只会调用一次load_kv_vert_full. 只有第一个iteration会读数据块
+				it->io_conserve = true;  //zhenxin: 必须增加这行，唯一目的是令 io_conserve = true; (初始化一些东西)
+			}
+			else
+				it->is_io_done = false;
+#pragma omp barrier
+			convert_tm = wtime() - convert_tm;
+			
 			if((tid & 1) == 0)
 			{
 				while(true)

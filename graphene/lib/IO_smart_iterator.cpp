@@ -797,10 +797,10 @@ void IO_smart_iterator::load_kv_vert_full(sa_t criterion)
 	while(cd->circ_free_chunk->is_empty()){}
 	this->wait_comp_time += (wtime() - blk_tm);
 
-	cd->get_chunk();
+	// cd->get_chunk();
 	cd->load_chunk_full();
 	cd->get_chunk();
-	cd->load_chunk_full();
+	// cd->load_chunk_full();
 	
 	if((cd->circ_load_chunk->is_empty()) &&
 		(cd->circ_free_chunk->is_full()) &&
